@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <locale.h>
+#include <conio.h>
+
+bool is_min(int** matr, int dim, int x, int y) {
+	if (x > 0 && y > 0 && matr[y][x] >= matr[y - 1][x - 1]) return false;
+	if (y > 0 && matr[y][x] >= matr[y - 1][x]) return false;
+	if (x < (dim-1) && y > 0 && matr[y][x] >= matr[y - 1][x + 1]) return false;
+	if (x > 0 && matr[y][x] >= matr[y][x - 1]) return false;
+	if (x < (dim - 1) && matr[y][x] >= matr[y][x + 1]) return false;
+	if (x > 0 && y < (dim - 1) && matr[y][x] >= matr[y + 1][x - 1]) return false;
+	if (y < (dim - 1) && matr[y][x] >= matr[y + 1][x]) return false;
+	if (x < (dim - 1) && y < (dim - 1) && matr[y][x] >= matr[y + 1][x + 1]) return false;
+	return true;
+};
+
+int main() {
+	setlocale(LC_CTYPE, "");
+	int n;
+	printf("Задайте размерность матрицы a[n][n], n=\n");
+	scanf_s("%d", &n);
+
+	int** a, x, y;
+	a = new int* [n];
+	printf("Задайте %d элементов матрицы (в матрице они будут построчно)\n", n * n);
+	for (y = 0; y < n; y++) {
+		a[y] = new int[n];
+		for (x = 0; x < n; x++) {
+			scanf_s("%d", &a[y][x]);
+		}
+	}
+
+	printf("Задана матрица a[%d][%d]:\n", n, n);
+	for (y = 0; y < n; y++) {
+		for (x = 0; x < n; x++) {
+			printf("%d\t", a[y][x]);
+		}
+		printf("\n");
+	}
+
+	printf("Элеметы матрицы, которые меньше соседних:\n");
+	for (y = 0; y < n; y++) {
+		for (x = 0; x < n; x++) {
+			if (is_min(a, n, x, y)) {
+				printf("a[%d][%d]=%d\t", y, x, a[y][x]);
+			}
+		}
+		printf("\n");
+	}
+
+	delete[]a;
+	_getch();
+	return 0;
+}
